@@ -33,8 +33,4 @@ CREATE TABLE DATALAYER.DATA
 );
 /
 
-<<<<<<< HEAD
-
 select * from DATALAYER.DATA;
-=======
->>>>>>> 760580cbb2a8a7551273400c49faafb723c143df

@@ -12,6 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -24,6 +26,8 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @ContextConfiguration
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class,
     DbUnitTestExecutionListener.class })
 public class DataLayerTests {
 
@@ -33,9 +37,7 @@ public class DataLayerTests {
   @Test
   @DatabaseSetup("data_test_get.xml")
   public void test_get() {
-    
     Assert.assertTrue( 2 == dataService.get().size() ); 
-    
   }
   
   @Test
