@@ -16,67 +16,56 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Data implements java.io.Serializable {
 
   private static final long serialVersionUID = 1L;
-  
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique = true, nullable = false)
   private Long ident;
-  
+
   @Column(name = "DESCRIPTION", nullable = false, length = 128)
   private String description;
-  
+
   @Column(name = "TS")
   private LocalDate timestamp;
-  
-  
-  
-  public Data() { }
-  
-  
-  
+
+  public static Data of(String description, LocalDate timestamp) {
+    Data response = new Data();
+    response.setDescription(description);
+    response.setTimestamp(timestamp);
+    return response;
+  }
+
+  public Data() {
+  }
+
   public Long getId() {
     return ident;
   }
-
-
 
   public void setId(Long id) {
     this.ident = id;
   }
 
-
-
   public String getDescription() {
     return description;
   }
-
-
 
   public void setDescription(String description) {
     this.description = description;
   }
 
-
-
   public LocalDate getTimestamp() {
     return timestamp;
   }
-
-
 
   public void setTimestamp(LocalDate timestamp) {
     this.timestamp = timestamp;
   }
 
-
-
   @Override
   public String toString() {
     return ToStringBuilder.reflectionToString(this);
   }
-
-
 
   @Override
   public int hashCode() {
@@ -85,8 +74,6 @@ public class Data implements java.io.Serializable {
     result = prime * result + ((ident == null) ? 0 : ident.hashCode());
     return result;
   }
-
-
 
   @Override
   public boolean equals(Object obj) {
@@ -104,7 +91,5 @@ public class Data implements java.io.Serializable {
       return false;
     return true;
   }
-  
-  
 
 }
