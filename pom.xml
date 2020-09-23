@@ -25,6 +25,7 @@
 		<java.version>1.8</java.version>
 		<oracle.ojdbc.version>11.2.0.3</oracle.ojdbc.version>
 		<spring.data.oracle.version>1.2.1.RELEASE</spring.data.oracle.version>
+		<mssql.version>6.1.0.jre8</mssql.version>
 	</properties>
 
 	<dependencies>
@@ -50,18 +51,11 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<!-- Oracle JDBC driver -->
+		<!-- JDBC driver -->
 		<dependency>
-			<groupId>oracle.jdbc</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>${oracle.ojdbc.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-oracle</artifactId>
-			<version>${spring.data.oracle.version}</version>
-			<scope>test</scope>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>${mssql.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -85,6 +79,51 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<version>0.31.0</version>
+				<configuration>
+					<images>
+						<image>
+							<alias>sqlserver</alias>
+							<name>mcr.microsoft.com/mssql/server</name>
+							<run>
+								<ports>
+									<port>1433:1433</port>
+								</ports>
+								<env>
+									<SA_PASSWORD>P4ssw0rD</SA_PASSWORD>
+									<ACCEPT_EULA>Y</ACCEPT_EULA>
+									<MSSQL_PID>Enterprise</MSSQL_PID>
+								</env>
+								<wait>
+									<log>SQL Server is now ready for client connections</log>
+									<time>30000</time>
+								</wait>
+								<namingStrategy>alias</namingStrategy>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start</id>
+						<phase>process-test-classes</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
